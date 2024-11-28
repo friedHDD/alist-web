@@ -84,6 +84,7 @@
   "sso_default_permission": "SSO default permission",
   "sso_endpoint_name": "SSO endpoint name",
   "sso_jwt_public_key": "SSO JWT public key",
+  "sso_extra_scopes": "SSO Extra Scopes",
   "sso_login_enabled": "SSO login enabled",
   "sso_login_platform": "SSO login platform",
   "sso_login_platforms": {
