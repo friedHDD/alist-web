@@ -83,6 +83,7 @@
   "sso_default_dir": "Sso default dir",
   "sso_default_permission": "Sso default permission",
   "sso_endpoint_name": "Sso endpoint name",
+  "sso_extra_scopes": "Sso extra scopes",
   "sso_jwt_public_key": "Sso jwt public key",
   "sso_login_enabled": "Sso login enabled",
   "sso_login_platform": "Sso login platform",
