@@ -17,7 +17,6 @@ import {
   For,
   JSX,
   onCleanup,
-  Setter,
   Show,
 } from "solid-js"
 import { Paginator } from "~/components"
@@ -180,52 +179,22 @@ export const Tasks = (props: TasksProps) => {
       }),
     )
   }
-  const doWithSelected = (
-    loadingSetter: Setter<boolean>,
-    fetchFunc: (task: TaskInfo) => PEmptyResp,
-    successCallback?: () => void,
-  ) => {
-    return async () => {
-      loadingSetter(true)
-      const promises = filteredTask()
-        .filter((task) => task.selected)
-        .map(fetchFunc)
-      let success = true
-      for (const p of promises) {
-        const resp = await p
-        if (resp.code !== 200) {
-          success = false
-          handleResp(resp)
-          if (resp.code === 401) return
-        }
-      }
-      loadingSetter(false)
-      if (success) successCallback?.()
-    }
+  const getSelectedId = () =>
+    filteredTask()
+      .filter((task) => task.selected)
+      .map((task) => task.id)
+  const [retrySelectedLoading, retrySelected] = useFetch(
+    (): PEmptyResp => r.post(`/task/${props.type}/retry_some`, getSelectedId()),
+  )
+  const [operateSelectedLoading, operateSelected] = useFetch(
+    (): PEmptyResp =>
+      r.post(`/task/${props.type}/${operateName}_some`, getSelectedId()),
+  )
+  const notifyIndividualError = (msg: Record<string, string>) => {
+    Object.entries(msg).forEach(([key, value]) => {
+      notify.error(`${key}: ${value}`)
+    })
   }
-  const [retrySelectedLoading, setRetrySelectedLoading] = createSignal(false)
-  const retrySelected = doWithSelected(
-    setRetrySelectedLoading,
-    (task) => {
-      return r.post(`/task/${props.type}/retry?tid=${task.id}`)
-    },
-    () => {
-      notify.info(t("tasks.retry"))
-      refresh()
-    },
-  )
-  const [operateSelectedLoading, setOperateSelectedLoading] =
-    createSignal(false)
-  const operateSelected = doWithSelected(
-    setOperateSelectedLoading,
-    (task) => {
-      return r.post(`/task/${props.type}/${operateName}?tid=${task.id}`)
-    },
-    () => {
-      notify.success(t("global.delete_success"))
-      refresh()
-    },
-  )
   const [page, setPage] = createSignal(1)
   const pageSize = 20
   const operateName = props.done === "undone" ? "cancel" : "delete"
@@ -300,7 +269,13 @@ export const Tasks = (props: TasksProps) => {
           <Button
             colorScheme="primary"
             loading={retrySelectedLoading()}
-            onClick={retrySelected}
+            onClick={async () => {
+              const resp = await retrySelected()
+              handleResp(resp, (data) => {
+                notifyIndividualError(data)
+                refresh()
+              })
+            }}
           >
             {t(`tasks.retry_selected`)}
           </Button>
@@ -308,7 +283,13 @@ export const Tasks = (props: TasksProps) => {
         <Button
           colorScheme="warning"
           loading={operateSelectedLoading()}
-          onClick={operateSelected}
+          onClick={async () => {
+            const resp = await operateSelected()
+            handleResp(resp, (data) => {
+              notifyIndividualError(data)
+              refresh()
+            })
+          }}
         >
           {t(`tasks.${operateName}_selected`)}
         </Button>
