@@ -69,6 +69,8 @@
   "139Yun": {
     "authorization": "Authorization",
     "cloud_id": "Cloud id",
+    "custom_upload_part_size": "Custom upload part size",
+    "custom_upload_part_size-tips": "0 for auto",
     "root_folder_id": "Root folder id",
     "type": "Type",
     "types": {
@@ -245,10 +247,8 @@
   },
   "BaiduPhoto": {
     "album_id": "Album id",
-    "client_id": "Client id",
-    "client_secret": "Client secret",
+    "cookie": "Cookie",
     "delete_origin": "Delete origin",
-    "refresh_token": "Refresh token",
     "show_type": "Show type",
     "show_types": {
       "root": "Root",
@@ -577,11 +577,6 @@
       "web": "Web"
     },
     "refresh_token": "Refresh token",
-    "refresh_token_method": "Refresh token method",
-    "refresh_token_methods": {
-      "http": "Http",
-      "oauth2": "Oauth2"
-    },
     "root_folder_id": "Root folder id",
     "username": "Username"
   },
