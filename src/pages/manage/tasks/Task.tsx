@@ -138,10 +138,7 @@ export const Task = (props: TaskAttribute & TasksProps & TaskLocalSetter) => {
       ? new Date().getTime()
       : new Date(props.end_time).getTime()
   let speedText = "-"
-  if (props.prevProgress !== undefined && props.prevFetchTime !== undefined) {
-    const timeDelta = (props.curFetchTime - props.prevFetchTime) / 1000
-    const lengthDelta =
-      ((props.progress - props.prevProgress) * props.total_bytes) / 100
+  const parseSpeedText = (timeDelta: number, lengthDelta: number) => {
     let delta = lengthDelta / timeDelta
     let unit = "bytes/s"
     if (delta > 1024) {
@@ -156,7 +153,26 @@ export const Task = (props: TaskAttribute & TasksProps & TaskLocalSetter) => {
       delta /= 1024
       unit = "GB/s"
     }
-    speedText = `${delta.toFixed(2)} ${unit}`
+    return `${delta.toFixed(2)} ${unit}`
+  }
+  if (props.done) {
+    if (
+      props.start_time !== props.end_time &&
+      props.progress > 0 &&
+      startTime !== -1
+    ) {
+      const timeDelta = (endTime - startTime) / 1000
+      const lengthDelta = (props.total_bytes * props.progress) / 100
+      speedText = parseSpeedText(timeDelta, lengthDelta)
+    }
+  } else if (
+    props.prevProgress !== undefined &&
+    props.prevFetchTime !== undefined
+  ) {
+    const timeDelta = (props.curFetchTime - props.prevFetchTime) / 1000
+    const lengthDelta =
+      ((props.progress - props.prevProgress) * props.total_bytes) / 100
+    speedText = parseSpeedText(timeDelta, lengthDelta)
   }
   return (
     <Show when={!deleted()}>
@@ -277,7 +293,7 @@ export const Task = (props: TaskAttribute & TasksProps & TaskLocalSetter) => {
             columnGap="$4"
             mb="$2"
           >
-            <Show when={props.start_time !== ""}>
+            <Show when={startTime !== -1}>
               <GridItem
                 color="$neutral9"
                 textAlign="right"
