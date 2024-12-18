@@ -15,7 +15,7 @@ import { PEmptyResp, PResp, User, UserMethods, UserPermissions } from "~/types"
 import { createStore } from "solid-js/store"
 import { For, Show } from "solid-js"
 import { me, setMe } from "~/store"
-import { PublicKeys } from "~/pages/manage/users/PublicKeys"
+import { PublicKeys } from "./PublicKeys"
 
 const Permission = (props: {
   can: boolean

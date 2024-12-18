@@ -29,7 +29,7 @@ import {
   supported,
   CredentialCreationOptionsJSON,
 } from "@github/webauthn-json/browser-ponyfill"
-import { PublicKeys } from "~/pages/manage/users/PublicKeys"
+import { PublicKeys } from "./PublicKeys"
 
 const PermissionBadge = (props: { can: boolean; children: JSXElement }) => {
   return (
