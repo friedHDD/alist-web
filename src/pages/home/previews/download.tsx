@@ -1,6 +1,7 @@
 import {
   Button,
   HStack,
+  IconButton,
   Image,
   Popover,
   PopoverArrow,
@@ -21,6 +22,8 @@ export const Download = (props: { openWith?: boolean }) => {
   const { copyCurrentRawLink } = useCopyLink()
   const [qrUrl, setQrUrl] = createSignal("")
   QRCode.toDataURL(objStore.raw_url).then((url) => setQrUrl(url))
+  const [pinned, setPinned] = createSignal(false)
+  const [hover, setHover] = createSignal(false)
   return (
     <FileInfo>
       <HStack spacing="$2">
@@ -30,8 +33,18 @@ export const Download = (props: { openWith?: boolean }) => {
         <Button as="a" href={objStore.raw_url} target="_blank">
           {t("home.preview.download")}
         </Button>
-        <Popover triggerMode="hover">
-          <PopoverTrigger as={BsQrCode} />
+        <Popover opened={pinned() || hover()} motionPreset="none">
+          <PopoverTrigger
+            as={IconButton}
+            icon={<BsQrCode />}
+            aria-label="QRCode"
+            colorScheme="success"
+            onClick={() => {
+              setPinned(!pinned())
+            }}
+            onMouseOver={() => setHover(true)}
+            onMouseOut={() => setHover(false)}
+          />
           <PopoverContent width="fit-content">
             <PopoverArrow />
             <PopoverBody>
