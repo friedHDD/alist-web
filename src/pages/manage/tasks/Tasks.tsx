@@ -75,7 +75,14 @@ export const Tasks = (props: TasksProps) => {
           : -1,
     state: (a, b) =>
       a.state === b.state ? (a.id > b.id ? 1 : -1) : a.state > b.state ? 1 : -1,
-    progress: (a, b) => (a.progress < b.progress ? 1 : -1),
+    progress: (a, b) =>
+      a.progress === b.progress
+        ? a.id > b.id
+          ? 1
+          : -1
+        : a.progress < b.progress
+          ? 1
+          : -1,
   }
   const curSorter = createMemo(() => {
     return (a: TaskInfo, b: TaskInfo) =>
