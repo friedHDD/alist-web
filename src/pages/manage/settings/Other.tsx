@@ -24,6 +24,7 @@ const OtherSettings = () => {
   const [transmissionUrl, setTransmissionUrl] = createSignal("")
   const [transmissionSeedTime, setTransmissionSeedTime] = createSignal("")
   const [pan115TempDir, set115TempDir] = createSignal("")
+  const [pikpakTempDir, setPikPakTempDir] = createSignal("")
   const [thunderTempDir, setThunderTempDir] = createSignal("")
   const [token, setToken] = createSignal("")
   const [settings, setSettings] = createSignal<SettingItem[]>([])
@@ -55,6 +56,12 @@ const OtherSettings = () => {
         temp_dir: pan115TempDir(),
       }),
   )
+  const [setPikPakLoading, setPikPak] = useFetch(
+    (): PResp<string> =>
+      r.post("/admin/setting/set_pikpak", {
+        temp_dir: pikpakTempDir(),
+      }),
+  )
   const [setThunderLoading, setThunder] = useFetch(
     (): PResp<string> =>
       r.post("/admin/setting/set_thunder", {
@@ -77,8 +84,9 @@ const OtherSettings = () => {
       setTransmissionSeedTime(
         data.find((i) => i.key === "transmission_seedtime")?.value || "",
       )
-      set115TempDir(
-        data.find((i) => i.key === "115_temp_dir")?.value || "",
+      set115TempDir(data.find((i) => i.key === "115_temp_dir")?.value || "")
+      setPikPakTempDir(
+        data.find((i) => i.key === "pikpak_temp_dir")?.value || "",
       )
       setThunderTempDir(
         data.find((i) => i.key === "thunder_temp_dir")?.value || "",
@@ -191,6 +199,29 @@ const OtherSettings = () => {
         }}
       >
         {t("settings_other.set_115")}
+      </Button>
+      <Heading my="$2">{t("settings_other.pikpak")}</Heading>
+      <FormControl w="$full" display="flex" flexDirection="column">
+        <FormLabel for="pikpak_temp_dir" display="flex" alignItems="center">
+          {t(`settings.pikpak_temp_dir`)}
+        </FormLabel>
+        <FolderChooseInput
+          id="pikpak_temp_dir"
+          value={pikpakTempDir()}
+          onChange={(path) => setPikPakTempDir(path)}
+        />
+      </FormControl>
+      <Button
+        my="$2"
+        loading={setPikPakLoading()}
+        onClick={async () => {
+          const resp = await setPikPak()
+          handleResp(resp, (data) => {
+            notify.success(data)
+          })
+        }}
+      >
+        {t("settings_other.set_pikpak")}
       </Button>
       <Heading my="$2">{t("settings_other.thunder")}</Heading>
       <FormControl w="$full" display="flex" flexDirection="column">
