@@ -9,5 +9,7 @@
   "set_qbit": "Set qBittorrent",
   "qbittorrent": "qBittorrent",
   "transmission": "Transmission",
-  "set_transmission": "Set Transmission"
+  "set_transmission": "Set Transmission",
+  "thunder": "Thunder",
+  "set_thunder": "Set Thunder"
 }

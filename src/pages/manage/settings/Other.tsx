@@ -1,6 +1,14 @@
-import { Button, Heading, HStack, Input, SimpleGrid } from "@hope-ui/solid"
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  SimpleGrid,
+} from "@hope-ui/solid"
 import { createSignal } from "solid-js"
-import { MaybeLoading } from "~/components"
+import { FolderChooseInput, MaybeLoading } from "~/components"
 import { useFetch, useManageTitle, useT, useUtil } from "~/hooks"
 import { Group, SettingItem, PResp } from "~/types"
 import { handleResp, notify, r } from "~/utils"
@@ -15,6 +23,7 @@ const OtherSettings = () => {
   const [qbitSeedTime, setQbitSeedTime] = createSignal("")
   const [transmissionUrl, setTransmissionUrl] = createSignal("")
   const [transmissionSeedTime, setTransmissionSeedTime] = createSignal("")
+  const [thunderTempDir, setThunderTempDir] = createSignal("")
   const [token, setToken] = createSignal("")
   const [settings, setSettings] = createSignal<SettingItem[]>([])
   const [settingsLoading, settingsData] = useFetch(
@@ -39,6 +48,12 @@ const OtherSettings = () => {
         seedtime: transmissionSeedTime(),
       }),
   )
+  const [setThunderLoading, setThunder] = useFetch(
+    (): PResp<string> =>
+      r.post("/admin/setting/set_thunder", {
+        temp_dir: thunderTempDir(),
+      }),
+  )
   const refresh = async () => {
     const resp = await settingsData()
     handleResp(resp, (data) => {
@@ -54,6 +69,9 @@ const OtherSettings = () => {
       )
       setTransmissionSeedTime(
         data.find((i) => i.key === "transmission_seedtime")?.value || "",
+      )
+      setThunderTempDir(
+        data.find((i) => i.key === "thunder_temp_dir")?.value || "",
       )
       setSettings(data)
     })
@@ -140,6 +158,29 @@ const OtherSettings = () => {
         }}
       >
         {t("settings_other.set_transmission")}
+      </Button>
+      <Heading my="$2">{t("settings_other.thunder")}</Heading>
+      <FormControl w="$full" display="flex" flexDirection="column">
+        <FormLabel for="thunder_temp_dir" display="flex" alignItems="center">
+          {t(`settings.thunder_temp_dir`)}
+        </FormLabel>
+        <FolderChooseInput
+          id="thunder_temp_dir"
+          value={thunderTempDir()}
+          onChange={(path) => setThunderTempDir(path)}
+        />
+      </FormControl>
+      <Button
+        my="$2"
+        loading={setThunderLoading()}
+        onClick={async () => {
+          const resp = await setThunder()
+          handleResp(resp, (data) => {
+            notify.success(data)
+          })
+        }}
+      >
+        {t("settings_other.set_thunder")}
       </Button>
       <Heading my="$2">{t("settings.token")}</Heading>
       <Input value={token()} readOnly />
