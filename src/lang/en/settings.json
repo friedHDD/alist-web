@@ -106,6 +106,7 @@
   "sso_organization_name": "Sso organization name",
   "text_types": "Text types",
   "token": "Token",
+  "115_temp_dir": "115 temp dir",
   "thunder_temp_dir": "Thunder temp dir",
   "transmission_seedtime": "Transmission seedtime",
   "transmission_uri": "Transmission uri",

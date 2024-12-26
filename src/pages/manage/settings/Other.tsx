@@ -23,6 +23,7 @@ const OtherSettings = () => {
   const [qbitSeedTime, setQbitSeedTime] = createSignal("")
   const [transmissionUrl, setTransmissionUrl] = createSignal("")
   const [transmissionSeedTime, setTransmissionSeedTime] = createSignal("")
+  const [pan115TempDir, set115TempDir] = createSignal("")
   const [thunderTempDir, setThunderTempDir] = createSignal("")
   const [token, setToken] = createSignal("")
   const [settings, setSettings] = createSignal<SettingItem[]>([])
@@ -48,6 +49,12 @@ const OtherSettings = () => {
         seedtime: transmissionSeedTime(),
       }),
   )
+  const [set115Loading, set115] = useFetch(
+    (): PResp<string> =>
+      r.post("/admin/setting/set_115", {
+        temp_dir: pan115TempDir(),
+      }),
+  )
   const [setThunderLoading, setThunder] = useFetch(
     (): PResp<string> =>
       r.post("/admin/setting/set_thunder", {
@@ -69,6 +76,9 @@ const OtherSettings = () => {
       )
       setTransmissionSeedTime(
         data.find((i) => i.key === "transmission_seedtime")?.value || "",
+      )
+      set115TempDir(
+        data.find((i) => i.key === "115_temp_dir")?.value || "",
       )
       setThunderTempDir(
         data.find((i) => i.key === "thunder_temp_dir")?.value || "",
@@ -158,6 +168,29 @@ const OtherSettings = () => {
         }}
       >
         {t("settings_other.set_transmission")}
+      </Button>
+      <Heading my="$2">{t("settings_other.115")}</Heading>
+      <FormControl w="$full" display="flex" flexDirection="column">
+        <FormLabel for="115_temp_dir" display="flex" alignItems="center">
+          {t(`settings.115_temp_dir`)}
+        </FormLabel>
+        <FolderChooseInput
+          id="115_temp_dir"
+          value={pan115TempDir()}
+          onChange={(path) => set115TempDir(path)}
+        />
+      </FormControl>
+      <Button
+        my="$2"
+        loading={set115Loading()}
+        onClick={async () => {
+          const resp = await set115()
+          handleResp(resp, (data) => {
+            notify.success(data)
+          })
+        }}
+      >
+        {t("settings_other.set_115")}
       </Button>
       <Heading my="$2">{t("settings_other.thunder")}</Heading>
       <FormControl w="$full" display="flex" flexDirection="column">
