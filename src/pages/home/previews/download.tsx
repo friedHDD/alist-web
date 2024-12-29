@@ -21,7 +21,10 @@ export const Download = (props: { openWith?: boolean }) => {
   const t = useT()
   const { copyCurrentRawLink } = useCopyLink()
   const [qrUrl, setQrUrl] = createSignal("")
-  QRCode.toDataURL(objStore.raw_url).then((url) => setQrUrl(url))
+  QRCode.toDataURL(objStore.raw_url, {
+    type: "image/jpeg",
+    scale: 2,
+  }).then((url) => setQrUrl(url))
   const [pinned, setPinned] = createSignal(false)
   const [hover, setHover] = createSignal(false)
   return (
@@ -49,7 +52,7 @@ export const Download = (props: { openWith?: boolean }) => {
             <PopoverArrow />
             <PopoverBody>
               <Image
-                boxSize="100px"
+                maxWidth="300px"
                 src={qrUrl()}
                 alt="QR Code of download link"
                 objectFit="cover"
