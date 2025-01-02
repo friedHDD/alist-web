@@ -54,9 +54,13 @@ const Item = (props: ItemProps) => {
         </FormLabel>
       </Show>
       <Switch fallback={<Center>{t("settings_other.unknown_type")}</Center>}>
-        <Match when={[Type.String, Type.Number].includes(props.type)}>
+        <Match
+          when={[Type.String, Type.Number, Type.Float].includes(props.type)}
+        >
           <Input
-            type={props.type === Type.Number ? "number" : ""}
+            type={
+              props.type === (Type.Number || Type.Float) ? "number" : "text"
+            }
             id={props.key}
             // value={props.value()}
             value={props.value}
