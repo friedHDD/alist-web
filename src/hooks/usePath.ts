@@ -8,6 +8,8 @@ import {
   objStore,
   recordScroll,
   recoverScroll,
+  getScroll,
+  clearScroll,
   me,
 } from "~/store"
 import {
@@ -232,6 +234,9 @@ export const usePath = () => {
     },
     pageChange: pageChange,
     loadMore: () => {
+      if (getScroll(pathname()) < window.scrollY) {
+        clearScroll(pathname())
+      }
       pageChange(globalPage + 1, undefined, true)
     },
     allLoaded: () => globalPage >= Math.ceil(objStore.total / pagination.size),

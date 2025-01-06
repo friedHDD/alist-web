@@ -15,3 +15,11 @@ export const recoverScroll = (path: string) => {
   })
   log("recoverScroll", path, ScrollMap.get(path))
 }
+
+export const getScroll = (path: string) => {
+  return ScrollMap.get(path) || 0
+}
+
+export const clearScroll = (path: string) => {
+  ScrollMap.delete(path)
+}
