@@ -6,6 +6,7 @@ import {
   State,
   getPagination,
   objStore,
+  recordScroll,
   recoverScroll,
   me,
 } from "~/store"
@@ -192,9 +193,7 @@ export const usePath = () => {
         ObjStore.setWrite(data.write)
         ObjStore.setProvider(data.provider)
         ObjStore.setState(State.Folder)
-        if (!(append && (index ?? 1) > 1)) {
-          recoverScroll(path)
-        }
+        recoverScroll(path)
       },
       handleErr,
     )
@@ -222,6 +221,13 @@ export const usePath = () => {
     handlePathChange: handlePathChange,
     setPathAs: setPathAs,
     refresh: (retry_pass?: boolean, force?: boolean) => {
+      if (
+        pagination.type === "load_more" ||
+        pagination.type === "auto_load_more"
+      ) {
+        resetGlobalPage()
+      }
+      recordScroll(pathname())
       handlePathChange(pathname(), retry_pass, force)
     },
     pageChange: pageChange,

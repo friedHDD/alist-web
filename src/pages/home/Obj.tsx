@@ -32,9 +32,9 @@ export const Obj = () => {
       useObjTitle()
       if (!first) {
         resetGlobalPage()
+        recordScroll(lastPathname)
       }
       first = false
-      recordScroll(lastPathname, window.scrollY)
       handlePathChange(pathname)
       lastPathname = pathname
     }),
