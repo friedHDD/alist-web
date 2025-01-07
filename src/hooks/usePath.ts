@@ -212,7 +212,9 @@ export const usePath = () => {
         to(pathname().replace(me().base_path, ""))
         return
       }
-      ObjStore.setErr(msg)
+      if (code === undefined || code >= 0) {
+        ObjStore.setErr(msg)
+      }
     }
   }
   const pageChange = (index?: number, size?: number, append = false) => {
