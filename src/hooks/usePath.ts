@@ -6,6 +6,7 @@ import {
   State,
   getPagination,
   objStore,
+  recordScroll,
   recoverScroll,
   me,
 } from "~/store"
@@ -131,9 +132,9 @@ export const usePath = () => {
     retry_pass = rp ?? false
     handleErr("")
     if (IsDirRecord[path]) {
-      handleFolder(path, globalPage, undefined, undefined, force)
+      return handleFolder(path, globalPage, undefined, undefined, force)
     } else {
-      handleObj(path)
+      return handleObj(path)
     }
   }
 
@@ -216,18 +217,34 @@ export const usePath = () => {
     }
   }
   const pageChange = (index?: number, size?: number, append = false) => {
-    handleFolder(pathname(), index, size, append)
+    return handleFolder(pathname(), index, size, append)
+  }
+  const loadMore = () => {
+    return pageChange(globalPage + 1, undefined, true)
   }
   return {
     handlePathChange: handlePathChange,
     setPathAs: setPathAs,
-    refresh: (retry_pass?: boolean, force?: boolean) => {
-      handlePathChange(pathname(), retry_pass, force)
+    refresh: async (retry_pass?: boolean, force?: boolean) => {
+      const path = pathname()
+      recordScroll(path)
+      if (
+        pagination.type === "load_more" ||
+        pagination.type === "auto_load_more"
+      ) {
+        const page = globalPage
+        resetGlobalPage()
+        await handlePathChange(path, retry_pass, force)
+        while (globalPage < page) {
+          await loadMore()
+        }
+      } else {
+        await handlePathChange(path, retry_pass, force)
+      }
+      recoverScroll(path)
     },
     pageChange: pageChange,
-    loadMore: () => {
-      pageChange(globalPage + 1, undefined, true)
-    },
+    loadMore: loadMore,
     allLoaded: () => globalPage >= Math.ceil(objStore.total / pagination.size),
   }
 }
