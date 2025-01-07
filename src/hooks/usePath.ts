@@ -22,6 +22,7 @@ import { useRouter } from "./useRouter"
 
 let first_fetch = true
 
+let cancelObj: Canceler
 let cancelList: Canceler
 export function addOrUpdateQuery(
   key: string,
@@ -79,7 +80,15 @@ export const resetGlobalPage = () => {
 }
 export const usePath = () => {
   const { pathname, to } = useRouter()
-  const [, getObj] = useFetch((path: string) => fsGet(path, password()))
+  const [, getObj] = useFetch((path: string) =>
+    fsGet(
+      path,
+      password(),
+      new axios.CancelToken((c) => {
+        cancelObj = c
+      }),
+    ),
+  )
   const pagination = getPagination()
   if (pagination.type === "pagination" && getQueryVariable("page")) {
     globalPage = parseInt(getQueryVariable("page"))
@@ -102,7 +111,7 @@ export const usePath = () => {
         page.index,
         page.size,
         arg?.force,
-        new axios.CancelToken(function executor(c) {
+        new axios.CancelToken((c) => {
           cancelList = c
         }),
       )
@@ -127,6 +136,7 @@ export const usePath = () => {
   // if not, fetch get then determine if it is dir or file
   const handlePathChange = (path: string, rp?: boolean, force?: boolean) => {
     log(`handle [${path}] change`)
+    cancelObj?.()
     cancelList?.()
     retry_pass = rp ?? false
     handleErr("")
