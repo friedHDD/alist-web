@@ -20,7 +20,7 @@ export const Rename = () => {
   const handler = (name: string) => {
     if (name === "rename") {
       if (!oneChecked()) {
-        notify.warning(t("home.toolbar.only_one-tips"))
+        bus.emit("tool", "batchRename")
         return
       }
       onOpen()
