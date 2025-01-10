@@ -10,7 +10,7 @@ import {
 } from "solid-js"
 import { FullLoading, Error } from "~/components"
 import { resetGlobalPage, useObjTitle, usePath, useRouter } from "~/hooks"
-import { objStore, recordScroll, /*layout,*/ State } from "~/store"
+import { objStore, recordHistory, /*layout,*/ State } from "~/store"
 
 const Folder = lazy(() => import("./folder/Folder"))
 const File = lazy(() => import("./file/File"))
@@ -31,10 +31,10 @@ export const Obj = () => {
     on(pathname, (pathname) => {
       useObjTitle()
       if (!first) {
+        recordHistory(lastPathname)
         resetGlobalPage()
       }
       first = false
-      recordScroll(lastPathname, window.scrollY)
       handlePathChange(pathname)
       lastPathname = pathname
     }),
