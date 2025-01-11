@@ -61,8 +61,12 @@ export const fsMkdir = (path: string): PEmptyResp => {
   return r.post("/fs/mkdir", { path })
 }
 
-export const fsRename = (path: string, name: string): PEmptyResp => {
-  return r.post("/fs/rename", { path, name })
+export const fsRename = (
+  path: string,
+  name: string,
+  overwrite: boolean,
+): PEmptyResp => {
+  return r.post("/fs/rename", { path, name, overwrite })
 }
 
 export const fsBatchRename = (
@@ -76,8 +80,9 @@ export const fsMove = (
   src_dir: string,
   dst_dir: string,
   names: string[],
+  overwrite: boolean,
 ): PEmptyResp => {
-  return r.post("/fs/move", { src_dir, dst_dir, names })
+  return r.post("/fs/move", { src_dir, dst_dir, names, overwrite })
 }
 
 export const fsRecursiveMove = (
@@ -91,8 +96,9 @@ export const fsCopy = (
   src_dir: string,
   dst_dir: string,
   names: string[],
+  overwrite: boolean,
 ): PEmptyResp => {
-  return r.post("/fs/copy", { src_dir, dst_dir, names })
+  return r.post("/fs/copy", { src_dir, dst_dir, names, overwrite })
 }
 
 export const fsRemove = (dir: string, names: string[]): PEmptyResp => {
@@ -103,11 +109,16 @@ export const fsRemoveEmptyDirectory = (src_dir: string): PEmptyResp => {
   return r.post("/fs/remove_empty_directory", { src_dir })
 }
 
-export const fsNewFile = (path: string, password: string): PEmptyResp => {
+export const fsNewFile = (
+  path: string,
+  password: string,
+  overwrite: boolean,
+): PEmptyResp => {
   return r.put("/fs/put", undefined, {
     headers: {
       "File-Path": encodeURIComponent(path),
       Password: password,
+      Overwrite: overwrite.toString(),
     },
   })
 }
