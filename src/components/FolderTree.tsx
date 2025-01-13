@@ -27,6 +27,7 @@ import {
   Setter,
   createEffect,
   on,
+  JSXElement,
 } from "solid-js"
 import { useFetch, useT, useUtil } from "~/hooks"
 import { getMainColor, password } from "~/store"
@@ -192,6 +193,7 @@ export type ModalFolderChooseProps = {
   type?: string
   defaultValue?: string
   loading?: boolean
+  other?: JSXElement
 }
 export const ModalFolderChoose = (props: ModalFolderChooseProps) => {
   const t = useT()
@@ -213,6 +215,7 @@ export const ModalFolderChoose = (props: ModalFolderChooseProps) => {
         {/* <ModalCloseButton /> */}
         <ModalHeader>{t("home.toolbar.choose_dst_folder")}</ModalHeader>
         <ModalBody>
+          {props.other}
           <FolderTree
             onChange={setValue}
             handle={(h) => setHandler(h)}

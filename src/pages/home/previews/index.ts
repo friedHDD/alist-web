@@ -4,11 +4,26 @@ import { Obj, ObjType } from "~/types"
 import { ext } from "~/utils"
 import { generateIframePreview } from "./iframe"
 import { useRouter } from "~/hooks"
+import { getArchiveExtensions } from "~/store/archive"
+
+type Ext = string[] | "*" | (() => string[])
+
+const extsContains = (exts: Ext | undefined, ext: string): boolean => {
+  if (exts === undefined) {
+    return false
+  } else if (exts === "*") {
+    return true
+  } else if (typeof exts === "function") {
+    return (exts as () => string[])().includes(ext)
+  } else {
+    return (exts as string[]).includes(ext)
+  }
+}
 
 export interface Preview {
   name: string
   type?: ObjType
-  exts?: string[] | "*"
+  exts?: Ext
   provider?: RegExp
   component: Component
 }
@@ -89,6 +104,11 @@ const previews: Preview[] = [
     type: ObjType.VIDEO,
     component: lazy(() => import("./video360")),
   },
+  {
+    name: "Archive",
+    exts: () => getArchiveExtensions(),
+    component: lazy(() => import("./archive")),
+  },
 ]
 
 export const getPreviews = (
@@ -106,8 +126,7 @@ export const getPreviews = (
     if (
       preview.type === file.type ||
       (typeOverride && preview.type === typeOverride) ||
-      preview.exts === "*" ||
-      preview.exts?.includes(ext(file.name).toLowerCase())
+      extsContains(preview.exts, ext(file.name).toLowerCase())
     ) {
       res.push({ name: preview.name, component: preview.component })
     }
