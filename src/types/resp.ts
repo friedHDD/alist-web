@@ -46,18 +46,3 @@ export type EmptyResp = Resp<{}>
 export type PResp<T> = Promise<Resp<T>>
 export type PPageResp<T> = Promise<PageResp<T>>
 export type PEmptyResp = Promise<EmptyResp>
-
-export type ObjTree = Obj & {
-  children?: ObjTree[]
-}
-
-export type FsArchiveMetaResp = Resp<{
-  content: ObjTree[] | null
-  encrypted: boolean
-  comment: string
-}>
-
-export type FsArchiveListResp = Resp<{
-  content: Obj[]
-  total: number
-}>

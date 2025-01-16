@@ -1,11 +1,12 @@
 import { createDisclosure } from "@hope-ui/solid"
 import { onCleanup } from "solid-js"
 import { ModalFolderChoose } from "~/components"
-import { useFetch, usePath, useRouter } from "~/hooks"
+import { useFetch, usePath, useRouter, useT } from "~/hooks"
 import { selectedObjs } from "~/store"
 import { bus, fsCopy, fsMove, handleRespWithNotifySuccess } from "~/utils"
 
 export const Copy = () => {
+  const t = useT()
   const { isOpen, onOpen, onClose } = createDisclosure()
   const [loading, ok] = useFetch(fsCopy)
   const { pathname } = useRouter()
@@ -21,6 +22,7 @@ export const Copy = () => {
   })
   return (
     <ModalFolderChoose
+      header={t("home.toolbar.choose_dst_folder")}
       opened={isOpen()}
       onClose={onClose}
       loading={loading()}
@@ -40,6 +42,7 @@ export const Copy = () => {
 }
 
 export const Move = () => {
+  const t = useT()
   const { isOpen, onOpen, onClose } = createDisclosure()
   const [loading, ok] = useFetch(fsMove)
   const { pathname } = useRouter()
@@ -55,6 +58,7 @@ export const Move = () => {
   })
   return (
     <ModalFolderChoose
+      header={t("home.toolbar.choose_dst_folder")}
       opened={isOpen()}
       onClose={onClose}
       loading={loading()}

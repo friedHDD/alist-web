@@ -10,7 +10,7 @@ import { ImMoveUp } from "solid-icons/im"
 import { BiRegularRename } from "solid-icons/bi"
 import { HiOutlineFolderRemove } from "solid-icons/hi"
 
-interface Operations {
+export interface Operations {
   [key: string]: {
     icon: IconTypes
     color?: string

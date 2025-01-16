@@ -7,8 +7,8 @@ import {
   PResp,
   FsSearchResp,
   RenameObj,
-  FsArchiveMetaResp,
-  FsArchiveListResp,
+  ArchiveMeta,
+  ArchiveList,
 } from "~/types"
 import { r } from "."
 
@@ -120,7 +120,7 @@ export const fsArchiveMeta = (
   archive_pass = "",
   refresh = false,
   cancelToken?: CancelToken,
-): Promise<FsArchiveMetaResp> => {
+): PResp<ArchiveMeta> => {
   return r.post(
     "/fs/archive/meta",
     {
@@ -144,7 +144,7 @@ export const fsArchiveList = (
   per_page = 0,
   refresh = false,
   cancelToken?: CancelToken,
-): Promise<FsArchiveListResp> => {
+): PResp<ArchiveList> => {
   return r.post(
     "/fs/archive/list",
     {

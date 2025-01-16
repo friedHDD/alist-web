@@ -51,13 +51,13 @@ const iconMap = {
 
 export const getIconByTypeAndExt = (type: number, ext: string) => {
   if (type !== ObjType.FOLDER) {
-    if (getArchiveExtensions().includes(ext)) {
-      return BsFileEarmarkZipFill
-    }
     for (const [extensions, icon] of Object.entries(iconMap)) {
       if (extensions.split(",").includes(ext.toLowerCase())) {
         return icon
       }
+    }
+    if (getArchiveExtensions().includes(ext)) {
+      return BsFileEarmarkZipFill
     }
   }
   switch (type) {

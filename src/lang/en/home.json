@@ -44,6 +44,12 @@
     "decompress-pass": "Extraction password: ",
     "decompress-cache-full": "Cache full into a temp-file",
     "decompress-put-into-new": "Decompress into a new sub-folder",
+    "extract": "Extract to",
+    "archive": {
+      "input_password": "Please input extraction password",
+      "incorrect_password": "Incorrect password",
+      "extract_header": "Extract {{path}} to..."
+    },
     "copy_link": "Copy link",
     "preview_page": "Preview page",
     "down_link": "Download link",

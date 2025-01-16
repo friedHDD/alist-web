@@ -113,7 +113,10 @@ const App: Component = () => {
           <Error
             h="100vh"
             msg={
-              t("home.fetching_settings_failed") + t("home." + err().join("\n"))
+              t("home.fetching_settings_failed") +
+              err()
+                .map((e) => t("home." + e))
+                .join(", ")
             }
           />
         </Match>
