@@ -21,8 +21,15 @@ import {
   Show,
   Switch,
 } from "solid-js"
-import { getMainColor, local, OrderBy, password } from "~/store"
-import { Obj, ObjTree } from "~/types"
+import {
+  getMainColor,
+  local,
+  me,
+  OrderBy,
+  password,
+  selectedObjs,
+} from "~/store"
+import { Obj, ObjTree, UserMethods, UserPermissions } from "~/types"
 import { useFetch, useRouter, useT, useUtil } from "~/hooks"
 import { ListTitle } from "~/pages/home/folder/List"
 import { cols } from "~/pages/home/folder/ListItem"
@@ -45,6 +52,7 @@ import { Item, Menu, useContextMenu } from "solid-contextmenu"
 import { TbCopy, TbLink } from "solid-icons/tb"
 import { AiOutlineCloudDownload } from "solid-icons/ai"
 import { Operations } from "~/pages/home/toolbar/operations"
+import { isArchive } from "~/store/archive"
 
 const download = (url: string) => {
   window.open(url, "_blank")
@@ -176,6 +184,16 @@ const ContextMenu = () => {
         <ItemContent name="copy_link" />
       </Item>
       <Item
+        hidden={() => {
+          const index = UserPermissions.findIndex(
+            (item) => item === "decompress",
+          )
+          return (
+            !UserMethods.can(me(), index) ||
+            selectedObjs()[0].is_dir ||
+            !isArchive(selectedObjs()[0].name)
+          )
+        }}
         onClick={({ props }) => {
           bus.emit(
             "extract",
