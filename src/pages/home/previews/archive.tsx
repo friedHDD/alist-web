@@ -21,14 +21,7 @@ import {
   Show,
   Switch,
 } from "solid-js"
-import {
-  getMainColor,
-  local,
-  me,
-  OrderBy,
-  password,
-  selectedObjs,
-} from "~/store"
+import { getMainColor, local, me, OrderBy, password } from "~/store"
 import { Obj, ObjTree, UserMethods, UserPermissions } from "~/types"
 import { useFetch, useRouter, useT, useUtil } from "~/hooks"
 import { ListTitle } from "~/pages/home/folder/List"
@@ -52,7 +45,6 @@ import { Item, Menu, useContextMenu } from "solid-contextmenu"
 import { TbCopy, TbLink } from "solid-icons/tb"
 import { AiOutlineCloudDownload } from "solid-icons/ai"
 import { Operations } from "~/pages/home/toolbar/operations"
-import { isArchive } from "~/store/archive"
 
 const download = (url: string) => {
   window.open(url, "_blank")
@@ -188,11 +180,7 @@ const ContextMenu = () => {
           const index = UserPermissions.findIndex(
             (item) => item === "decompress",
           )
-          return (
-            !UserMethods.can(me(), index) ||
-            selectedObjs()[0].is_dir ||
-            !isArchive(selectedObjs()[0].name)
-          )
+          return !UserMethods.can(me(), index)
         }}
         onClick={({ props }) => {
           bus.emit(
