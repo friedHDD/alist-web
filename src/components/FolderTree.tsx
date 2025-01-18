@@ -194,6 +194,8 @@ export type ModalFolderChooseProps = {
   defaultValue?: string
   loading?: boolean
   footerSlot?: JSXElement
+  children?: JSXElement
+  header: string
 }
 export const ModalFolderChoose = (props: ModalFolderChooseProps) => {
   const t = useT()
@@ -213,8 +215,11 @@ export const ModalFolderChoose = (props: ModalFolderChooseProps) => {
       <ModalOverlay />
       <ModalContent>
         {/* <ModalCloseButton /> */}
-        <ModalHeader>{t("home.toolbar.choose_dst_folder")}</ModalHeader>
+        <ModalHeader w="$full" css={{ overflowWrap: "break-word" }}>
+          {props.header}
+        </ModalHeader>
         <ModalBody>
+          {props.children}
           <FolderTree
             onChange={setValue}
             handle={(h) => setHandler(h)}

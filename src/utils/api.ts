@@ -7,6 +7,8 @@ import {
   PResp,
   FsSearchResp,
   RenameObj,
+  ArchiveMeta,
+  ArchiveList,
 } from "~/types"
 import { r } from "."
 
@@ -120,6 +122,74 @@ export const fsNewFile = (
       Password: password,
       Overwrite: overwrite.toString(),
     },
+  })
+}
+
+export const fsArchiveMeta = (
+  path: string = "/",
+  password = "",
+  archive_pass = "",
+  refresh = false,
+  cancelToken?: CancelToken,
+): PResp<ArchiveMeta> => {
+  return r.post(
+    "/fs/archive/meta",
+    {
+      path,
+      password,
+      archive_pass,
+      refresh,
+    },
+    {
+      cancelToken: cancelToken,
+    },
+  )
+}
+
+export const fsArchiveList = (
+  path: string = "/",
+  password = "",
+  archive_pass = "",
+  inner_path = "/",
+  page = 1,
+  per_page = 0,
+  refresh = false,
+  cancelToken?: CancelToken,
+): PResp<ArchiveList> => {
+  return r.post(
+    "/fs/archive/list",
+    {
+      path,
+      password,
+      archive_pass,
+      inner_path,
+      page,
+      per_page,
+      refresh,
+    },
+    {
+      cancelToken: cancelToken,
+    },
+  )
+}
+
+export const fsArchiveDecompress = (
+  src_dir: string,
+  dst_dir: string,
+  name: string,
+  archive_pass = "",
+  inner_path = "/",
+  cache_full = true,
+  put_into_new_dir = false,
+): PEmptyResp => {
+  return r.post("/fs/archive/decompress", {
+    src_dir,
+    dst_dir,
+    name,
+    archive_pass,
+    inner_path,
+    cache_full,
+    put_into_new_dir,
   })
 }
 

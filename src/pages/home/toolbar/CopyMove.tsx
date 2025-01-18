@@ -24,6 +24,7 @@ export const Copy = () => {
   })
   return (
     <ModalFolderChoose
+      header={t("home.toolbar.choose_dst_folder")}
       opened={isOpen()}
       onClose={onClose}
       loading={loading()}
@@ -73,6 +74,7 @@ export const Move = () => {
   })
   return (
     <ModalFolderChoose
+      header={t("home.toolbar.choose_dst_folder")}
       opened={isOpen()}
       onClose={onClose}
       loading={loading()}
