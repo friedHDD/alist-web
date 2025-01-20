@@ -25,9 +25,9 @@ export const FormUpload: Upload = async (
   }
   if (rapid) {
     const { md5, sha1, sha256 } = await calculateHash(file)
-    headers["X-File-MD5"] = md5
-    headers["X-File-SHA1"] = sha1
-    headers["X-File-SHA256"] = sha256
+    headers["X-File-Md5"] = md5
+    headers["X-File-Sha1"] = sha1
+    headers["X-File-Sha256"] = sha256
   }
   const resp: EmptyResp = await r.put("/fs/form", form, {
     headers: headers,
