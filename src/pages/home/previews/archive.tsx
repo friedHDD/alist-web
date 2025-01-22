@@ -45,6 +45,7 @@ import { Item, Menu, useContextMenu } from "solid-contextmenu"
 import { TbCopy, TbLink } from "solid-icons/tb"
 import { AiOutlineCloudDownload } from "solid-icons/ai"
 import { Operations } from "~/pages/home/toolbar/operations"
+import "solid-contextmenu/dist/style.css"
 
 const download = (url: string) => {
   window.open(url, "_blank")
