@@ -128,6 +128,7 @@
     "url": "Url"
   },
   "AList V3": {
+    "auth_header": "Authorization Header",
     "meta_password": "Meta password",
     "pass_ua_to_upsteam": "Pass ua to upsteam",
     "password": "Password",

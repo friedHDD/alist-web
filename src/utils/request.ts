@@ -52,11 +52,11 @@ instance.interceptors.response.use(
   },
 )
 
-instance.defaults.headers.common["Authorization"] =
+instance.defaults.headers.common["X-Token"] =
   localStorage.getItem("token") || ""
 
 export const changeToken = (token?: string) => {
-  instance.defaults.headers.common["Authorization"] = token ?? ""
+  instance.defaults.headers.common["X-Token"] = token ?? ""
   localStorage.setItem("token", token ?? "")
 }
 
