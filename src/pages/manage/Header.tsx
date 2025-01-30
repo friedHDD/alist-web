@@ -34,7 +34,7 @@ const Header = () => {
     handleResp(await logOutReq(), () => {
       changeToken()
       notify.success(t("manage.logout_success"))
-      to(`/@login?redirect=${encodeURIComponent(location.pathname)}`)
+      to(`/@vannesa?redirect=${encodeURIComponent(location.pathname)}`)
     })
   }
   return (
@@ -65,7 +65,7 @@ const Header = () => {
             color="$info9"
             cursor="pointer"
             onClick={() => {
-              to("/@manage")
+              to("/@iris")
             }}
           >
             {t("manage.title")}

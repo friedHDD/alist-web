@@ -83,7 +83,7 @@ export const Obj = () => {
               <Text
                 color="$info9"
                 as={LinkWithBase}
-                href={`/@login?redirect=${encodeURIComponent(
+                href={`/@vannesa?redirect=${encodeURIComponent(
                   location.pathname,
                 )}`}
               >

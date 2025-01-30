@@ -86,7 +86,7 @@ const Storages = () => {
         </Button>
         <Button
           onClick={() => {
-            to("/@manage/storages/add")
+            to("/@iris/storages/add")
           }}
         >
           {t("global.add")}
