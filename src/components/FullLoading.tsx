@@ -7,7 +7,9 @@ export const FullScreenLoading = () => {
       <Spinner
         thickness="4px"
         speed="0.65s"
-        emptyColor="$neutral4"
+	emptyColor="tomato"
+        //emptyColor="$neutral4"
+	//此处修
         color={getMainColor()}
         size="xl"
       />
@@ -34,7 +36,9 @@ export const FullLoading = (props: {
       <Spinner
         thickness={`${merged.thickness}px`}
         speed="0.65s"
-        emptyColor="$neutral4"
+	emptyColor="tomato"
+        //emptyColor="$neutral4"
+	//此处修改第二处
         color={getMainColor()}
         size={merged.size as any}
       />
@@ -58,7 +62,7 @@ export const CenterLoading = <C extends ElementType = "div">(
 ) => {
   return (
     <Center w="$full" h="$full">
-      <Spinner color={getMainColor()} {...props} />
+      <Spinner color="tomato" {...props} />
     </Center>
   )
 }

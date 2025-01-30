@@ -145,12 +145,15 @@ const Profile = () => {
               }}
             >
               <AlertIcon mr="$2_5" />
+
               <AlertTitle mr="$2_5">{t("users.guest-tips")}</AlertTitle>
+	      <Text>{t("不是…您来此地有何贵干捏?")}</Text>
               <AlertDescription>{t("users.modify_nothing")}</AlertDescription>
             </Alert>
             <HStack spacing="$2">
-              <Text>{t("global.have_account")}</Text>
-              <Text
+	      {/* <Text>{t("global.have_account")}</Text> */}
+	      {/* <Text>{t("洗洗睡吧不公开")}</Text> */}
+              {/* <Text
                 color="$info9"
                 as={LinkWithBase}
                 href={`/@login?redirect=${encodeURIComponent(
@@ -158,7 +161,8 @@ const Profile = () => {
                 )}`}
               >
                 {t("global.go_login")}
-              </Text>
+              </Text> */}
+	      <img src="https://imgse.com/i/pEVfvy4" width="50%" height ="50%"></img>
             </HStack>
           </>
         }
@@ -303,7 +307,7 @@ const Profile = () => {
           {t("users.add_webauthn")}
         </Button>
       </Show>
-      <HStack wrap="wrap" gap="$2" mt="$2">
+      {/* <HStack wrap="wrap" gap="$2" mt="$2">
         <For each={UserPermissions}>
           {(item, i) => (
             <PermissionBadge can={UserMethods.can(me(), i())}>
@@ -311,7 +315,7 @@ const Profile = () => {
             </PermissionBadge>
           )}
         </For>
-      </HStack>
+      </HStack> */}
       <PublicKeys isMine={true} userId={me().id} />
     </VStack>
   )
