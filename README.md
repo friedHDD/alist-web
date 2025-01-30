@@ -1,3 +1,6 @@
+## 构建状态:
+[![build](https://github.com/Vannnesa/alist-web/actions/workflows/build.yml/badge.svg)](https://github.com/Vannnesa/alist-web/actions/workflows/build.yml)
+
 ## Usage
 
 Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
