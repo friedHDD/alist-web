@@ -58,6 +58,7 @@
     "load_more": "Load more",
     "pagination": "Pagination"
   },
+  "preview_archives_by_default": "Preview by default when opening archives",
   "privacy_regs": "Privacy regs",
   "proxy_ignore_headers": "Proxy ignore headers",
   "proxy_types": "Proxy types",
