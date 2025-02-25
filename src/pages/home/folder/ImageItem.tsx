@@ -76,6 +76,12 @@ export const ImageItem = (props: { obj: StoreObj; index: number }) => {
               pos="absolute"
               left="$1"
               top="$1"
+              on:mousedown={(e: MouseEvent) => {
+                e.stopPropagation()
+              }}
+              on:click={(e: MouseEvent) => {
+                e.stopPropagation()
+              }}
               checked={props.obj.selected}
               onChange={(e: any) => {
                 selectIndex(props.index, e.target.checked)

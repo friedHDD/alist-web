@@ -133,6 +133,9 @@ export const GridItem = (props: { obj: StoreObj; index: number }) => {
               left="$1"
               top="$1"
               // colorScheme="neutral"
+              on:mousedown={(e: MouseEvent) => {
+                e.stopPropagation()
+              }}
               on:click={(e: MouseEvent) => {
                 e.stopPropagation()
               }}

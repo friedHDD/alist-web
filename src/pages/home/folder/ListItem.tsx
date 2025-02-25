@@ -106,6 +106,9 @@ export const ListItem = (props: { obj: StoreObj; index: number }) => {
           <Show when={checkboxOpen()}>
             <ItemCheckbox
               // colorScheme="neutral"
+              on:mousedown={(e: MouseEvent) => {
+                e.stopPropagation()
+              }}
               on:click={(e: MouseEvent) => {
                 e.stopPropagation()
               }}

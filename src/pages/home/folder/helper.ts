@@ -51,7 +51,7 @@ export function useOpenItemWithCheckbox() {
 export function useSelectWithMouse() {
   const disabled = () => local["select_with_mouse"] === "disabled"
 
-  const isMouseSupported = () => !isMobile && !disabled() && !checkboxOpen()
+  const isMouseSupported = () => !isMobile && !disabled()
 
   const registerSelectContainer = () => {
     createEffect(() => {
@@ -62,13 +62,15 @@ export function useSelectWithMouse() {
         boundaries: [".viselect-container"],
         selectables: [".viselect-item"],
       })
-      selection.on("start", ({ event }) => {
-        const ev = event as MouseEvent
+      selection.on("beforestart", () => {
         selection.clearSelection(true, true)
         selection.select(".viselect-item.selected", true)
+      })
+      selection.on("start", ({ event }) => {
+        const ev = event as MouseEvent
         if (!ev.ctrlKey && !ev.metaKey) {
           selectAll(false)
-          selection.clearSelection()
+          selection.clearSelection(true, true)
         }
       })
       selection.on(
