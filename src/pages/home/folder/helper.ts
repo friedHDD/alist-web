@@ -1,6 +1,6 @@
 import { Checkbox, hope } from "@hope-ui/solid"
-import { createKeyHold } from "@solid-primitives/keyboard"
-import { createEffect, createSignal, onCleanup } from "solid-js"
+import { createEffect, onCleanup } from "solid-js"
+import { useContextMenu } from "solid-contextmenu"
 import SelectionArea from "@viselect/vanilla"
 import {
   checkboxOpen,
@@ -9,53 +9,49 @@ import {
   objStore,
   oneChecked,
   selectAll,
+  selectedObjs,
   selectIndex,
 } from "~/store"
-import { isMac, isMobile } from "~/utils/compatibility"
-import { useContextMenu } from "solid-contextmenu"
+import { isMobile } from "~/utils/compatibility"
+import { StoreObj } from "~/types"
 
-export function useOpenItemWithCheckbox() {
-  const [shouldOpen, setShouldOpen] = createSignal(
-    local["open_item_on_checkbox"] === "direct",
-  )
-  const isAltKeyPressed = createKeyHold("Alt", { preventDefault: false })
-  const isMetaKeyPressed = createKeyHold("Meta", { preventDefault: false })
-  const isControlKeyPressed = createKeyHold("Control", {
-    preventDefault: false,
-  })
-  createEffect(() => {
-    switch (local["open_item_on_checkbox"]) {
-      case "direct": {
-        setShouldOpen(true)
-        break
-      }
-      case "disable_while_checked": {
-        setShouldOpen(!haveSelected())
-        break
-      }
-      case "with_ctrl": {
-        // FYI why should use metaKey on a Mac
-        // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/ctrlKey
-        // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/metaKey
-        setShouldOpen(isMac ? isMetaKeyPressed() : isControlKeyPressed())
-        break
-      }
-      case "with_alt": {
-        setShouldOpen(isAltKeyPressed())
-      }
-    }
-  })
-  return shouldOpen
-}
+let selectedCache: StoreObj[] | null = null
 
 export function useSelectWithMouse() {
-  const disabled = () => local["select_with_mouse"] === "disabled"
+  const isMouseSupported = () => !isMobile && checkboxOpen()
+  const openWithDoubleClick = () =>
+    isMouseSupported() && local["open_item_on_checkbox"] === "dblclick"
+  const toggleWithClick = () =>
+    isMouseSupported() &&
+    local["open_item_on_checkbox"] === "disable_while_checked" &&
+    haveSelected()
 
-  const isMouseSupported = () => !isMobile && !disabled()
+  const saveSelectionCache = () => {
+    selectedCache = selectedObjs()
+  }
+
+  const restoreSelectionCache = () => {
+    if (selectedCache === null) return false
+    for (let i = 0; i < objStore.objs.length; ++i) {
+      selectIndex(i, selectedCache.indexOf(objStore.objs[i]) >= 0)
+    }
+    return true
+  }
+
+  const clearSelectionCache = () => {
+    selectedCache = null
+  }
 
   const registerSelectContainer = () => {
     createEffect(() => {
-      if (!isMouseSupported()) return
+      if (!isMouseSupported()) {
+        const area = document.querySelector(".viselect-container")
+        area?.addEventListener("mousedown", saveSelectionCache)
+        onCleanup(
+          () => area?.removeEventListener("mousedown", saveSelectionCache),
+        )
+        return
+      }
       const selection = new SelectionArea({
         selectionAreaClass: "viselect-selection-area",
         startAreas: [".viselect-container"],
@@ -63,12 +59,16 @@ export function useSelectWithMouse() {
         selectables: [".viselect-item"],
       })
       selection.on("beforestart", () => {
+        saveSelectionCache()
         selection.clearSelection(true, true)
         selection.select(".viselect-item.selected", true)
       })
       selection.on("start", ({ event }) => {
         const ev = event as MouseEvent
-        if (!ev.ctrlKey && !ev.metaKey) {
+        if (ev.type === "mousemove") {
+          clearSelectionCache()
+        }
+        if (!ev.shiftKey && !ev.ctrlKey && !ev.metaKey) {
           selectAll(false)
           selection.clearSelection(true, true)
         }
@@ -111,7 +111,14 @@ export function useSelectWithMouse() {
     }
   }
 
-  return { isMouseSupported, registerSelectContainer, captureContentMenu }
+  return {
+    isMouseSupported,
+    openWithDoubleClick,
+    toggleWithClick,
+    restoreSelectionCache,
+    registerSelectContainer,
+    captureContentMenu,
+  }
 }
 
 export const ItemCheckbox = hope(Checkbox, {
