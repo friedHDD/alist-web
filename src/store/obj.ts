@@ -51,7 +51,8 @@ const [objStore, setObjStore] = createStore<{
 })
 
 const setObjs = (objs: Obj[]) => {
-  lastChecked = { index: -1, selected: false }
+  lastChecked.start = -1
+  lastChecked.end = -1
   setObjStore("objs", objs)
   setObjStore("obj", "is_dir", true)
 }
@@ -113,36 +114,56 @@ export const appendObjs = (objs: Obj[]) => {
   )
 }
 
-let lastChecked = {
-  index: -1,
-  selected: false,
+const lastChecked = {
+  start: -1,
+  end: -1,
 }
 
 export const selectIndex = (index: number, checked: boolean, one?: boolean) => {
   if (one) {
     selectAll(false)
   }
-  if (
-    keyPressed["Shift"] &&
-    lastChecked.index !== -1 &&
-    lastChecked.selected === checked
-  ) {
-    const start = Math.min(lastChecked.index, index)
-    const end = Math.max(lastChecked.index, index)
-
-    setObjStore("objs", { from: start, to: end }, () => ({
-      selected: checked,
-    }))
+  if (keyPressed["Shift"]) {
+    if (lastChecked.start < 0) {
+      for (
+        let i = 0;
+        i < Math.max(index + 1, objStore.objs.length - index);
+        ++i
+      ) {
+        if (objStore.objs[index - i]?.selected) {
+          lastChecked.start = index - i
+          lastChecked.end = index - i
+          break
+        } else if (objStore.objs[index + i]?.selected) {
+          lastChecked.start = index + i
+          lastChecked.end = index + i
+          break
+        }
+      }
+    }
+    const countUncheck = Math.abs(lastChecked.end - lastChecked.start)
+    const signUncheck = Math.sign(lastChecked.end - lastChecked.start)
+    for (let i = 1; i <= countUncheck; ++i) {
+      setObjStore("objs", lastChecked.start + signUncheck * i, {
+        selected: false,
+      })
+    }
+    const countCheck = Math.abs(index - lastChecked.start)
+    const signCheck = Math.sign(index - lastChecked.start)
+    for (let i = 0; i <= countCheck; ++i) {
+      setObjStore("objs", lastChecked.start + signCheck * i, { selected: true })
+    }
+    lastChecked.end = index
   } else {
-    setObjStore(
-      "objs",
-      index,
-      produce((obj) => {
-        obj.selected = checked
-      }),
-    )
+    setObjStore("objs", index, { selected: checked })
+    if (checked) {
+      lastChecked.start = index
+      lastChecked.end = index
+    } else {
+      lastChecked.end = -1
+      lastChecked.start = -1
+    }
   }
-  lastChecked = { index, selected: checked }
 }
 
 export const selectAll = (checked: boolean) => {

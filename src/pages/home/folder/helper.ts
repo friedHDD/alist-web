@@ -70,7 +70,7 @@ export function useSelectWithMouse() {
         }
         if (!ev.shiftKey && !ev.ctrlKey && !ev.metaKey) {
           selectAll(false)
-          selection.clearSelection(true, true)
+          selection.clearSelection(true)
         }
       })
       selection.on(
