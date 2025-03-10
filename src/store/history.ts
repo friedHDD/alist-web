@@ -44,7 +44,7 @@ export const recoverHistory = async (path: string, page?: number) => {
   setGlobalPage(history.page)
   ObjStore.setState(State.Initial)
   await waitForNextFrame()
-  ObjStore.set(history.obj)
+  ObjStore.set(JSON.parse(JSON.stringify(history.obj)))
   await waitForNextFrame()
   window.scroll({ top: history.scroll, behavior: "smooth" })
 }
