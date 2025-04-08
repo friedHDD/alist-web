@@ -120,6 +120,7 @@ const Preview = () => {
     quality: [],
     plugins: [AutoHeightPlugin],
     whitelist: [],
+    screenshot: true,
     settings: [],
     moreVideoAttr: {
       // @ts-ignore

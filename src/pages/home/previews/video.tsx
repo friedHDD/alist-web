@@ -61,6 +61,7 @@ const Preview = () => {
     flip: true,
     playbackRate: true,
     aspectRatio: true,
+    screenshot: true,
     setting: true,
     hotkey: true,
     pip: true,
