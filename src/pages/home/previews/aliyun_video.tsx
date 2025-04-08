@@ -1,7 +1,7 @@
 import { Box, Center } from "@hope-ui/solid"
 import { Show, createSignal, onCleanup, onMount } from "solid-js"
 import { useRouter, useLink, useFetch } from "~/hooks"
-import { getSettingBool, objStore, password } from "~/store"
+import { getMainColor, getSettingBool, objStore, password } from "~/store"
 import { ObjType, PResp } from "~/types"
 import { ext, handleResp, notify, r, pathDir, pathJoin } from "~/utils"
 import Artplayer from "artplayer"
@@ -117,6 +117,7 @@ const Preview = () => {
     subtitleOffset: true,
     miniProgressBar: false,
     playsInline: true,
+    theme: getMainColor(),
     quality: [],
     plugins: [AutoHeightPlugin],
     whitelist: [],
