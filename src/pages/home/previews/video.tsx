@@ -106,6 +106,7 @@ const Preview = () => {
       // @ts-ignore
       "webkit-playsinline": true,
       playsInline: true,
+      crossOrigin: "anonymous",
     },
     type: ext(objStore.obj.name),
     customType: {

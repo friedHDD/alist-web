@@ -126,6 +126,7 @@ const Preview = () => {
       // @ts-ignore
       "webkit-playsinline": true,
       playsInline: true,
+      crossOrigin: "anonymous",
     },
     type: "m3u8",
     customType: {
