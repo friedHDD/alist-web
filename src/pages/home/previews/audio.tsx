@@ -24,14 +24,26 @@ const Preview = () => {
     if (lrcObj) {
       lrc = proxyLink(lrcObj, true)
     }
+    let cover = undefined
+    const coverObj = objStore.objs.find((o) => {
+      return (
+        o.type === ObjType.IMAGE &&
+        (baseName(o.name) === baseName(obj.name) ||
+          baseName(o.name).toLowerCase() === "cover")
+      )
+    })
+    if (coverObj) {
+      cover = proxyLink(coverObj, true)
+    } else {
+      cover =
+        getSetting("audio_cover") ||
+        "https://jsd.nn.ci/gh/alist-org/logo@main/logo.svg"
+    }
     const audio = {
       name: obj.name,
       artist: "Unknown",
       url: rawLink(obj, true),
-      cover:
-        obj.thumb ||
-        getSetting("audio_cover") ||
-        "https://jsd.nn.ci/gh/alist-org/logo@main/logo.svg",
+      cover: cover,
       lrc: lrc,
     }
     if (objStore.provider === "NeteaseMusic") {
