@@ -3,7 +3,7 @@ import "./audio.css"
 import APlayer from "aplayer"
 import { Box } from "@hope-ui/solid"
 import { onCleanup, onMount } from "solid-js"
-import { useLink, useRouter } from "~/hooks"
+import { useLink, useRouter, useTitle } from "~/hooks"
 import { getMainColor, getSetting, getSettingBool, objStore } from "~/store"
 import { ObjType, StoreObj } from "~/types"
 import { baseName, fsGet } from "~/utils"
@@ -88,6 +88,30 @@ const Preview = () => {
     const curIndex = audios.findIndex((obj) => obj.name === objStore.obj.name)
     if (curIndex !== -1) {
       ap.list.switch(curIndex)
+    }
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("seekto", (evt) =>
+        ap.seek(evt.seekTime),
+      )
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        ap.skipBack()
+      })
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        ap.skipForward()
+      })
+      ap.on("play", () => {
+        const current = ap.list.audios[ap.list.index]
+        useTitle(current.name)
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: current.name,
+          artist: current.artist === "Unknown" ? undefined : current.artist,
+          artwork: [
+            {
+              src: current.cover,
+            },
+          ],
+        })
+      })
     }
   })
   onCleanup(() => {
