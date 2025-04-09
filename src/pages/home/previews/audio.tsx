@@ -4,7 +4,7 @@ import APlayer from "aplayer"
 import { Box } from "@hope-ui/solid"
 import { onCleanup, onMount } from "solid-js"
 import { useLink, useRouter } from "~/hooks"
-import { getSetting, getSettingBool, objStore } from "~/store"
+import { getMainColor, getSetting, getSettingBool, objStore } from "~/store"
 import { ObjType, StoreObj } from "~/types"
 import { baseName, fsGet } from "~/utils"
 
@@ -60,6 +60,7 @@ const Preview = () => {
       container: document.querySelector("#audio-player"),
       mini: false,
       autoplay: getSettingBool("audio_autoplay"),
+      theme: getMainColor(),
       loop: "all",
       order: "list",
       preload: "auto",
