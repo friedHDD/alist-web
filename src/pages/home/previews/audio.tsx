@@ -29,7 +29,9 @@ const Preview = () => {
       return (
         o.type === ObjType.IMAGE &&
         (baseName(o.name) === baseName(obj.name) ||
-          baseName(o.name).toLowerCase() === "cover")
+          baseName(o.name).toLowerCase() === "front" ||
+          baseName(o.name).toLowerCase() === "cover" ||
+          baseName(o.name).toLowerCase() === "folder")
       )
     })
     if (coverObj) {
