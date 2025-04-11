@@ -33,7 +33,7 @@ const Preview = () => {
       )
     })
     if (coverObj) {
-      cover = proxyLink(coverObj, true)
+      cover = rawLink(coverObj, true)
     } else {
       cover =
         getSetting("audio_cover") ||
