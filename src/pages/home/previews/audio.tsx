@@ -95,12 +95,14 @@ const Preview = () => {
       navigator.mediaSession.setActionHandler("seekto", (evt) =>
         ap.seek(evt.seekTime),
       )
-      navigator.mediaSession.setActionHandler("previoustrack", () => {
-        ap.skipBack()
-      })
-      navigator.mediaSession.setActionHandler("nexttrack", () => {
-        ap.skipForward()
-      })
+      if (ap.list.audios.length > 1) {
+        navigator.mediaSession.setActionHandler("previoustrack", () => {
+          ap.skipBack()
+        })
+        navigator.mediaSession.setActionHandler("nexttrack", () => {
+          ap.skipForward()
+        })
+      }
       ap.on("play", () => {
         const current = ap.list.audios[ap.list.index]
         useTitle(current.name)
