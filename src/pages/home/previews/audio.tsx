@@ -38,6 +38,7 @@ const Preview = () => {
       cover = rawLink(coverObj, true)
     } else {
       cover =
+        obj.thumb ||
         getSetting("audio_cover") ||
         "https://jsd.nn.ci/gh/alist-org/logo@main/logo.svg"
     }
