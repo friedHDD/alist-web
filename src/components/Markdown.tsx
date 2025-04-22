@@ -214,8 +214,12 @@ export function Markdown(props: {
     })
     return content
   })
-  const [remarkPlugins, setRemarkPlugins] = createSignal<any[]>([remarkGfm])
-  const [rehypePlugins, setRehypePlugins] = createSignal<any[]>([rehypeRaw])
+  const [remarkPlugins, setRemarkPlugins] = createSignal<Function[]>([
+    remarkGfm,
+  ])
+  const [rehypePlugins, setRehypePlugins] = createSignal<Function[]>([
+    rehypeRaw,
+  ])
   createEffect(
     on(md, async () => {
       setShow(false)
