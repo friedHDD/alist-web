@@ -3,8 +3,6 @@ import { hljs } from "./highlight.js"
 import SolidMarkdown from "solid-markdown"
 import remarkGfm from "remark-gfm"
 import rehypeRaw from "rehype-raw"
-import reMarkMath from "remark-math"
-import rehypeKatex from "rehype-katex"
 import "./markdown.css"
 import { For, Show, createEffect, createMemo, createSignal, on } from "solid-js"
 import { clsx } from "clsx"
@@ -216,10 +214,19 @@ export function Markdown(props: {
     })
     return content
   })
+  const [remarkPlugins, setRemarkPlugins] = createSignal<any[]>([remarkGfm])
+  const [rehypePlugins, setRehypePlugins] = createSignal<any[]>([rehypeRaw])
   createEffect(
-    on(md, () => {
+    on(md, async () => {
       setShow(false)
-      insertKatexCSS()
+      // lazy for math rendering
+      if (/\$\$[\s\S]+?\$\$|\$[^$\n]+?\$/.test(md())) {
+        const { default: reMarkMath } = await import("remark-math")
+        const { default: rehypeKatex } = await import("rehype-katex")
+        insertKatexCSS()
+        setRemarkPlugins([...remarkPlugins(), reMarkMath])
+        setRehypePlugins([...rehypePlugins(), rehypeKatex])
+      }
       insertMermaidJS()
       setTimeout(() => {
         setShow(true)
@@ -243,8 +250,8 @@ export function Markdown(props: {
       <Show when={show()}>
         <SolidMarkdown
           class={clsx("markdown-body", props.class)}
-          remarkPlugins={[remarkGfm, reMarkMath]}
-          rehypePlugins={[rehypeRaw, rehypeKatex]}
+          remarkPlugins={remarkPlugins()}
+          rehypePlugins={rehypePlugins()}
           children={md()}
         />
       </Show>
