@@ -299,8 +299,10 @@ const Preview = () => {
     switch (searchParams["auto_fullscreen"]) {
       case "true":
         auto_fullscreen = true
+        break
       case "false":
         auto_fullscreen = false
+        break
       default:
         auto_fullscreen = false
     }
