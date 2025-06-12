@@ -8,18 +8,6 @@ cat package.json
 pnpm install
 pnpm i18n:release
 pnpm build
-cp -r dist ../
 cd ..
 
-# commit to web-dist
-cd web-dist
-rm -rf dist
-cp -r ../dist .
-git add .
-git commit --allow-empty -m "upload $version dist files" -a
-git tag -a $version -m "release $version"
-cd ..
-
-mkdir compress
-tar -czvf compress/dist.tar.gz dist/*
-zip -r compress/dist.zip dist/*
+tar -czvf dist.tar.gz dist/*

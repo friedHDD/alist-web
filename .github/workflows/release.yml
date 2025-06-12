@@ -22,11 +22,8 @@ jobs:
 
   release:
     needs: changelog
-    strategy:
-      matrix:
-        platform: [ubuntu-latest]
     name: Release
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
     steps:
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -50,41 +47,12 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
-      - name: Checkout dist repo
-        uses: actions/checkout@v4
-        with:
-          repository: friedHDD/alist-web-dist
-          ref: main
-          path: web-dist
-          persist-credentials: false
-          fetch-depth: 0
-
       - name: Build
         run: |
           mv alist-web/release.sh .
           bash release.sh
-        env:
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Publish npm
-        run: |
-          cd alist-web
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
-          pnpm publish --no-git-checks
-          cd ..
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Upload dist files
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.MY_TOKEN }}
-          branch: main
-          directory: web-dist
-          repository: friedHDD/alist-web-dist
-
-      - name: Release
+      - name: Upload dist.tar.gz
         uses: softprops/action-gh-release@v1
         with:
-          files: compress/*
+          files: dist.tar.gz

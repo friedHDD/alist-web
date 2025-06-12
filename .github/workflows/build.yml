@@ -8,9 +8,6 @@ on:
 
 jobs:
   build-release:
-    strategy:
-      matrix:
-        platform: [ubuntu-latest]
     name: Build and release
     runs-on: ubuntu-latest
     permissions:
