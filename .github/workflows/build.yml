@@ -7,12 +7,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-release:
     strategy:
       matrix:
         platform: [ubuntu-latest]
-    name: Build
-    runs-on: ${{ matrix.platform }}
+    name: Build and release
+    runs-on: ubuntu-latest
     steps:
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -36,15 +36,6 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
-      - name: Checkout dist repo
-        uses: actions/checkout@v4
-        with:
-          repository: friedHDD/alist-web-dist
-          ref: dev
-          path: web-dist
-          persist-credentials: false
-          fetch-depth: 0
-
       - name: Build
         run: |
           cd alist-web
@@ -52,26 +43,15 @@ jobs:
           pnpm i18n:build
           pnpm build
           cd ..
-        env:
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Commit dist
-        run: |
-          cd web-dist
-          rm -rf dist
-          cp -r ../alist-web/dist .
-          git add .
-          git config --local user.email "i@nn.ci"
-          git config --local user.name "Noah Hsu"
-          git commit --amend -m "upload dev dist"
-          cd ..
-
-      - name: Upload dist files
-        uses: ad-m/github-push-action@master
+      - name: Upload dist.tar.gz
+        uses: softprops/action-gh-release@v2
         with:
-          github_token: ${{ secrets.MY_TOKEN }}
-          branch: dev
-          directory: web-dist
-          repository: friedHDD/alist-web-dist
-          force: true
+          tag_name: beta
+          name: "Beta Build (from main branch)"
+          body: |
+            Automated build from push to main branch.
+            Commit: ${{ github.sha }}
+            Timestamp: ${{ github.event.head_commit.timestamp }}
+          prerelease: true
+          files: dist.tar.gz
