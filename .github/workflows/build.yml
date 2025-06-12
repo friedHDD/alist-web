@@ -44,6 +44,11 @@ jobs:
           pnpm build
           cd ..
 
+      - name: Compress build output
+        run: |
+          cd alist-web
+          tar -czvf ../dist.tar.gz dist
+
       - name: Upload dist.tar.gz
         uses: softprops/action-gh-release@v2
         with:
