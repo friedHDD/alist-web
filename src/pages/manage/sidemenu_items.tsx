@@ -195,7 +195,7 @@ export const side_menu_items: SideMenuItem[] = [
   {
     title: "manage.sidemenu.docs",
     icon: FaSolidBook,
-    to: "https://alist.nn.ci",
+    to: "https://github.com/NodeSeekDev/nlist-docs/tree/main/docs",
     role: UserRole.GUEST,
     external: true,
   },
