@@ -10,7 +10,7 @@ export const Footer = () => {
   return (
     <VStack class="footer" w="$full" py="$4">
       <HStack spacing="$1">
-        <Anchor href="https://github.com/alist-org/alist" external>
+        <Anchor href="hhttps://github.com/NodeSeekDev/alist" external>
           {t("home.footer.powered_by")}
         </Anchor>
         <span>|</span>
