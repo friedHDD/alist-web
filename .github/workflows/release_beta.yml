@@ -1,4 +1,4 @@
-name: build
+name: release_beta
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-release:
+  release-beta:
     name: Build and release
     runs-on: ubuntu-latest
     permissions:

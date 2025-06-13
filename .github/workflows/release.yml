@@ -6,24 +6,12 @@ on:
       - "*"
 
 jobs:
-  changelog:
-    name: Create release changelog
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Generate changelog
-        run: npx changelogithub # or changelogithub@0.12 if ensure the stable result
-        env:
-          GITHUB_TOKEN: ${{secrets.MY_TOKEN}}
-
   release:
-    needs: changelog
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -41,7 +29,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: main
           path: alist-web
           persist-credentials: false
           fetch-depth: 0
@@ -49,10 +36,21 @@ jobs:
 
       - name: Build
         run: |
-          mv alist-web/release.sh .
-          bash release.sh
+          cd alist-web
+          version=$(git describe --abbrev=0 --tags)
+          sed -i -e "s/\"version\": \"0.0.0\"/\"version\": \"$version\"/g" package.json
+          cat package.json
+          pnpm install
+          pnpm i18n:build
+          pnpm build
+          cd ..
 
-      - name: Upload dist.tar.gz
-        uses: softprops/action-gh-release@v1
+      - name: Compress build output
+        run: |
+          cd alist-web
+          tar -czvf ../dist.tar.gz dist
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
           files: dist.tar.gz
