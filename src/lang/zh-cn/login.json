@@ -3,11 +3,11 @@
   "username-tips": "Input your username",
   "password-tips": "Input your password",
   "otp-tips": "Input your OTP Code",
-  "remember": "Remember me",
-  "forget": "Forget password?",
+  "remember": "记住窝",
+  "forget": "忘记密码",
   "forget_url": "https://github.com/NodeSeekDev/nlist-docs/blob/main/docs/faq/howto.md#how-to-get-password-if-i-forget-it",
-  "clear": "Clear",
-  "login": "Login",
-  "use_guest": "Browse as a guest",
-  "success": "Login successfully"
+  "clear": "清除",
+  "login": "登录",
+  "use_guest": "访客模式",
+  "success": "欢迎回来~"
 }
