@@ -1,20 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>EPUB.js viewer</title>
 
-    <script
-      src="https://npm.elemecdn.com/jszip@3.10.1/dist/jszip.min.js"
-      integrity="sha256-rMfkFFWoB2W1/Zx+4bgHim0WC7vKRVrq6FTeZclH1Z4="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://npm.elemecdn.com/epubjs@0.3.93/dist/epub.min.js"
-      integrity="sha256-BurhV0UQe0qlCMlVOCdSUfab+58RdWIfxFjZ9C7QgtQ="
-      crossorigin="anonymous"
-    ></script>
+    <script src="./jszip.min.js" crossorigin="anonymous"></script>
+    <script src="./epub.min.js" crossorigin="anonymous"></script>
 
     <style>
       body {
@@ -323,7 +315,7 @@
           restore: true,
           reload: true,
           spreads: true,
-        }
+        },
       )
       var rendition = book.renderTo("viewer", {
         width: "100%",
@@ -344,7 +336,7 @@
               : rendition.next()
             e.preventDefault()
           },
-          false
+          false,
         )
 
         var prev = document.getElementById("prev")
@@ -356,7 +348,7 @@
               : rendition.prev()
             e.preventDefault()
           },
-          false
+          false,
         )
 
         var keyListener = function (e) {
