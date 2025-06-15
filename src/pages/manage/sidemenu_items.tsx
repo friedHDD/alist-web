@@ -14,16 +14,17 @@ import {
   BsBucket,
   BsHddNetwork,
   BsArrowLeftRight,
+  BsBoxFill,
 } from "solid-icons/bs"
 import { FiLogIn } from "solid-icons/fi"
-import { SiMetabase } from "solid-icons/si"
 import { CgDatabase } from "solid-icons/cg"
-import { OcWorkflow2 } from "solid-icons/oc"
 import { IoCopy, IoHome, IoMagnetOutline } from "solid-icons/io"
 import { Component, lazy } from "solid-js"
 import { Group, UserRole } from "~/types"
 import { FaSolidBook, FaSolidDatabase } from "solid-icons/fa"
 import { TbArchive } from "solid-icons/tb"
+import { BiRegularTask } from "solid-icons/bi"
+import { BiSolidDashboard } from "solid-icons/bi"
 
 export type SideMenuItem = SideMenuItemProps & {
   component?: Component
@@ -34,11 +35,10 @@ const CommonSettings = lazy(() => import("./settings/Common"))
 
 export const side_menu_items: SideMenuItem[] = [
   {
-    title: "manage.sidemenu.profile",
-    icon: BsFingerprint,
-    to: "/@manage",
-    role: UserRole.GUEST,
-    component: lazy(() => import("./users/Profile")),
+    title: "manage.sidemenu.dashboard",
+    icon: BiSolidDashboard,
+    to: "/@manage/",
+    component: () => lazy(() => import("./Dashboard")),
   },
   {
     title: "manage.sidemenu.settings",
@@ -108,8 +108,15 @@ export const side_menu_items: SideMenuItem[] = [
     ],
   },
   {
+    title: "manage.sidemenu.profile",
+    icon: BsFingerprint,
+    to: "/@manage/profile",
+    role: UserRole.GUEST,
+    component: lazy(() => import("./users/Profile")),
+  },
+  {
     title: "manage.sidemenu.tasks",
-    icon: OcWorkflow2,
+    icon: BiRegularTask,
     to: "/@manage/tasks",
     role: UserRole.GENERAL,
     children: [
@@ -169,7 +176,7 @@ export const side_menu_items: SideMenuItem[] = [
   },
   {
     title: "manage.sidemenu.metas",
-    icon: SiMetabase,
+    icon: BsBoxFill,
     to: "/@manage/metas",
     component: lazy(() => import("./metas/Metas")),
   },
@@ -187,17 +194,25 @@ export const side_menu_items: SideMenuItem[] = [
   },
   {
     title: "manage.sidemenu.about",
-    icon: BsFront,
-    to: "/@manage/about",
-    role: UserRole.GUEST,
-    component: lazy(() => import("./About")),
-  },
-  {
-    title: "manage.sidemenu.docs",
-    icon: FaSolidBook,
-    to: "https://github.com/NodeSeekDev/nlist-docs/tree/main/docs",
-    role: UserRole.GUEST,
-    external: true,
+    icon: BiRegularTask,
+    to: "/@manage/tasks",
+    role: UserRole.GENERAL,
+    children: [
+      {
+        title: "manage.sidemenu.about",
+        icon: BsFront,
+        to: "/@manage/about",
+        role: UserRole.GUEST,
+        component: lazy(() => import("./About")),
+      },
+      {
+        title: "manage.sidemenu.docs",
+        icon: FaSolidBook,
+        to: "https://github.com/NodeSeekDev/nlist-docs/tree/main/docs",
+        role: UserRole.GUEST,
+        external: true,
+      },
+    ],
   },
   {
     title: "manage.sidemenu.home",

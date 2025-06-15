@@ -5,7 +5,7 @@ const Dashboard = () => {
   useManageTitle("manage.sidemenu.dashboard")
   return (
     <Center h="$full">
-      <Heading>Dashboard</Heading>
+      <Heading>Welcome</Heading>
     </Center>
   )
 }
