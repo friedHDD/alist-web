@@ -194,7 +194,7 @@ export const side_menu_items: SideMenuItem[] = [
   },
   {
     title: "manage.sidemenu.about",
-    icon: BiRegularTask,
+    icon: BsFront,
     to: "/@manage/tasks",
     role: UserRole.GENERAL,
     children: [
