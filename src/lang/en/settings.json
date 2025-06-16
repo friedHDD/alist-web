@@ -1,4 +1,7 @@
 {
+  "115_temp_dir": "115 temp dir",
+  "pikpak_temp_dir": "Pikpak temp dir",
+  "thunder_temp_dir": "Thunder temp dir",
   "allow_indexed": "Allow indexed",
   "allow_mounted": "Allow mounted",
   "announcement": "Announcement",
@@ -79,6 +82,8 @@
   "s3_access_key_id": "S3 access key id",
   "s3_buckets": "S3 buckets",
   "s3_secret_access_key": "S3 secret access key",
+  "s3_generate": "Generate",
+  "s3_restart_to_apply": "Restart to apply",
   "search_index": "Search index",
   "search_indexs": {
     "bleve": "Bleve",

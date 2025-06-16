@@ -37,7 +37,7 @@ export const side_menu_items: SideMenuItem[] = [
   {
     title: "manage.sidemenu.dashboard",
     icon: BiSolidDashboard,
-    to: "/@manage/",
+    to: "/@manage",
     component: () => lazy(() => import("./Dashboard")),
   },
   {

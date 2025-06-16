@@ -1,4 +1,7 @@
 {
+  "115_temp_dir": "115缓存目录",
+  "pikpak_temp_dir": "Pikpak缓存目录",
+  "thunder_temp_dir": "迅雷缓存目录",
   "allow_indexed": "允许被索引",
   "allow_mounted": "允许被挂载",
   "announcement": "公告",
@@ -79,6 +82,8 @@
   "s3_access_key_id": "S3 Access Key ID",
   "s3_buckets": "S3 存储桶",
   "s3_secret_access_key": "S3 Secret Access Key",
+  "s3_generate": "生成",
+  "s3_restart_to_apply": "重启来提交",
   "search_index": "搜索索引",
   "search_indexs": {
     "bleve": "Bleve",
